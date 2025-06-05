@@ -58,7 +58,7 @@ function mostrarProductos() {
       <img src="${p.imagen}" alt="${p.nombre}" />
       <h3>${p.nombre}</h3>
       <p>Precio: $${p.precio}</p>
-      <button onclick="agregarAlCarrito(${p.id})">Agregar al carrito</button>
+      <button onclick="agregarAlCarrito('${p.id}')">Agregar al carrito</button>
     `;
     productosDiv.appendChild(div);
   });
@@ -69,4 +69,52 @@ function agregarAlCarrito(id) {
   const producto = productos.find(p => p.id === id);
   if (!producto) return;
 
-  const itemCarrito = carrito.find(item => item.id === id
+  const itemCarrito = carrito.find(item => item.id === id);
+  if (itemCarrito) {
+    itemCarrito.cantidad++;
+  } else {
+    carrito.push({ ...producto, cantidad: 1 });
+  }
+  mostrarCarrito();
+}
+
+// Mostrar carrito
+function mostrarCarrito() {
+  listaCarrito.innerHTML = '';
+  let total = 0;
+  carrito.forEach(item => {
+    total += item.precio * item.cantidad;
+    const li = document.createElement('li');
+    li.textContent = `${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}`;
+    const btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'X';
+    btnEliminar.onclick = () => {
+      eliminarDelCarrito(item.id);
+    };
+    li.appendChild(btnEliminar);
+    listaCarrito.appendChild(li);
+  });
+  totalDiv.textContent = `Total: $${total}`;
+}
+
+// Eliminar producto del carrito
+function eliminarDelCarrito(id) {
+  carrito = carrito.filter(item => item.id !== id);
+  mostrarCarrito();
+}
+
+// Vaciar carrito
+btnVaciar.addEventListener('click', () => {
+  carrito = [];
+  mostrarCarrito();
+});
+
+// Evento para cambiar filtro de marcas
+filtroMarca.addEventListener('change', mostrarProductos);
+
+// Inicializamos la página
+cargarProductos();
+mostrarCarrito();
+
+// Para que las funciones estén accesibles desde los botones inline
+window.agregarAlCarrito = agregarAlCarrito;
