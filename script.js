@@ -11,6 +11,7 @@ const modalNombre = document.getElementById('modalNombre');
 const modalPrecio = document.getElementById('modalPrecio');
 const selectTalle = document.getElementById('selectTalle');
 const btnAgregarModal = document.getElementById('btnAgregarModal');
+const btnEnviarPedido = document.getElementById('btnEnviarPedido');  // NUEVO botón
 
 let productos = [];
 let carrito = [];
@@ -160,6 +161,29 @@ btnVaciar.addEventListener('click', () => {
 
 // Filtro marca cambia la vista
 filtroMarca.addEventListener('change', mostrarProductos);
+
+// Enviar pedido por WhatsApp
+btnEnviarPedido.addEventListener('click', () => {
+  if (carrito.length === 0) {
+    alert('El carrito está vacío.');
+    return;
+  }
+
+  let mensaje = 'Hola, quiero hacer el siguiente pedido:%0A%0A'; // %0A es salto de línea en URL encoding
+
+  carrito.forEach(item => {
+    mensaje += `- ${item.nombre} (Talle: ${item.talle}) x${item.cantidad} - $${item.precio * item.cantidad}%0A`;
+  });
+
+  const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  mensaje += `%0ATotal: $${total}`;
+
+  // Número de WhatsApp (sin + ni espacios, ejemplo: 5491122233344)
+  const numeroWhatsApp = '5492213502642';
+
+  const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
+  window.open(urlWhatsApp, '_blank');
+});
 
 // Inicializamos la página
 cargarProductos();
