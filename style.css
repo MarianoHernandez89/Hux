@@ -224,4 +224,50 @@ h1 {
   cursor: pointer;
   user-select: none;
 }
+/* Selector de talles dentro del modal */
+#selectTalle {
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 200px;
+  margin: 10px 0 20px 0;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+#selectTalle:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Botón "Agregar al carrito" dentro del modal */
+#btnAgregarModal {
+  background-color: #007bff; /* Azul profesional */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+#btnAgregarModal:hover {
+  background-color: #0056b3;
+}
+
+#btnAgregarModal:active {
+  background-color: #004494;
+  box-shadow: none;
+}
+
+/* Opcional: agregar cursor pointer a toda el área del modal-content para claridad */
+.modal-content {
+  cursor: default;
+}
+
 
