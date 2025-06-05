@@ -11,14 +11,17 @@ let carrito = [];
 async function cargarProductos() {
   try {
     const response = await fetch('catalogo.json');
+    console.log('Response:', response);
     if (!response.ok) {
       throw new Error('Error al cargar el archivo JSON');
     }
     productos = await response.json();
+    console.log('Productos cargados:', productos);
     cargarMarcas();
     mostrarProductos();
   } catch (error) {
     productosDiv.textContent = 'Error al cargar productos: ' + error.message;
+    console.error(error);
   }
 }
 
