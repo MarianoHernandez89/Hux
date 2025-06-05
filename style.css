@@ -1,55 +1,188 @@
-body { 
-  font-family: Arial, sans-serif; 
-  margin: 20px; 
-}
-.producto { 
-  border: 1px solid #ddd; 
-  padding: 10px; 
-  margin: 10px; 
-  width: 200px; 
-  display: inline-block; 
-  vertical-align: top; 
-}
-.producto img { 
-  max-width: 100%; 
-  height: auto; 
-}
-.producto button { 
-  margin-top: 10px; 
-  padding: 5px 10px; 
-  cursor: pointer; 
-}
-#carrito { 
-  position: fixed; 
-  right: 20px; 
-  top: 20px; 
-  width: 300px; 
-  border: 1px solid #333; 
-  padding: 15px; 
-  background: #f9f9f9; 
-}
-#carrito h2 { 
-  margin-top: 0; 
-}
-#carrito ul { 
-  list-style: none; 
-  padding: 0; 
-  max-height: 300px; 
-  overflow-y: auto; 
-}
-#carrito ul li { 
-  margin-bottom: 10px; 
-}
-#carrito button { 
-  background: #e74c3c; 
-  color: white; 
-  border: none; 
-  padding: 3px 7px; 
-  cursor: pointer; 
-  margin-left: 10px; 
-}
-#total { 
-  font-weight: bold; 
-  margin-top: 10px; 
+/* Fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 30px;
+  background-color: #f5f7fa;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+h1 {
+  font-weight: 700;
+  font-size: 2.2rem;
+  margin-bottom: 25px;
+  color: #0a3d62;
+  text-align: center;
+}
+
+/* Contenedor productos con grid */
+#productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto 100px auto;
+}
+
+/* Card producto */
+.producto {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.producto:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.producto img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+.producto h3 {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #1e272e;
+  text-align: center;
+}
+
+.producto p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+/* Botón agregar */
+.producto button {
+  background-color: #0984e3;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.producto button:hover {
+  background-color: #065cb3;
+}
+
+/* Carrito */
+#carrito {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  width: 320px;
+  max-height: 600px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+#carrito h2 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #0a3d62;
+  text-align: center;
+}
+
+#carrito ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+#carrito ul li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: #2d3436;
+}
+
+#carrito ul li button {
+  background: #d63031;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#carrito ul li button:hover {
+  background: #b71c1c;
+}
+
+#total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  text-align: right;
+  color: #0984e3;
+}
+
+#vaciar-carrito {
+  background-color: #636e72;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#vaciar-carrito:hover {
+  background-color: #2d3436;
+}
+
+/* Select filtro de marcas */
+#filtroMarca {
+  display: block;
+  margin: 0 auto 40px auto;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 220px;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+}
+
+#filtroMarca:hover,
+#filtroMarca:focus {
+  border-color: #0984e3;
+  outline: none;
+}
