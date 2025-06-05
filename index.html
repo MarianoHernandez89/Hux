@@ -3,20 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Catálogo con Carrito</title>
+<title>Hux Importados</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
 <h1>Hux Importados</h1>
 
-<!-- Filtro por Marca -->
 <select id="filtroMarca">
   <option value="todas">Todas</option>
   <!-- Las marcas se agregan dinámicamente aquí -->
 </select>
 
-<!-- Contenedor de productos -->
 <div id="productos">Cargando productos...</div>
 
 <div id="carrito">
@@ -24,6 +22,19 @@
   <ul id="lista-carrito"></ul>
   <div id="total">Total: $0</div>
   <button id="vaciar-carrito">Vaciar carrito</button>
+</div>
+
+<!-- Modal para detalles y selección de talle -->
+<div id="modalProducto" class="modal">
+  <div class="modal-content">
+    <span id="cerrarModal" class="close">&times;</span>
+    <img id="modalImagen" src="" alt="" />
+    <h3 id="modalNombre"></h3>
+    <p id="modalPrecio"></p>
+    <label for="selectTalle">Seleccione talle:</label>
+    <select id="selectTalle"></select>
+    <button id="btnAgregarModal">Agregar al carrito</button>
+  </div>
 </div>
 
 <script src="script.js"></script>
