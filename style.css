@@ -186,6 +186,7 @@ h1 {
   border-color: #0984e3;
   outline: none;
 }
+
 /* Estilos del modal */
 .modal {
   display: none; /* Oculto por defecto */
@@ -206,6 +207,7 @@ h1 {
   max-width: 500px;
   text-align: center;
   position: relative;
+  cursor: default;
 }
 
 .modal-content img {
@@ -224,6 +226,7 @@ h1 {
   cursor: pointer;
   user-select: none;
 }
+
 /* Selector de talles dentro del modal */
 #selectTalle {
   padding: 8px 12px;
@@ -265,10 +268,6 @@ h1 {
   box-shadow: none;
 }
 
-/* Opcional: agregar cursor pointer a toda el área del modal-content para claridad */
-.modal-content {
-  cursor: default;
-}
 #enviar-pedido {
   background-color: #25d366; /* Verde WhatsApp */
   color: white;
@@ -286,6 +285,7 @@ h1 {
 #enviar-pedido:hover {
   background-color: #1ebe57;
 }
+
 #btnEnviarPedido, #vaciar-carrito {
   background-color: #007BFF; /* azul primario */
   color: white;
@@ -301,5 +301,3 @@ h1 {
 #btnEnviarPedido:hover, #vaciar-carrito:hover {
   background-color: #0056b3; /* azul más oscuro al pasar el mouse */
 }
-
-
