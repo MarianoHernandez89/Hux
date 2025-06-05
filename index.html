@@ -21,7 +21,7 @@
 
 <h1>Catálogo de Productos</h1>
 
-<div id="productos"></div>
+<div id="productos">Cargando productos...</div>
 
 <div id="carrito">
   <h2>Carrito</h2>
@@ -31,34 +31,27 @@
 </div>
 
 <script>
-  // Simulamos que este es tu JSON, después podés cargarlo con fetch si querés
-  const productos = [
-    {
-      "id": 1,
-      "nombre": "Remera Roja",
-      "precio": 1500,
-      "imagen": "img/remera1.jpg"
-    },
-    {
-      "id": 2,
-      "nombre": "Zapatillas Running",
-      "precio": 3500,
-      "imagen": "img/zapatilla2.jpg"
-    },
-    {
-      "id": 3,
-      "nombre": "Gorra Azul",
-      "precio": 800,
-      "imagen": "img/gorra1.jpg"
-    }
-  ];
-
   const productosDiv = document.getElementById('productos');
   const listaCarrito = document.getElementById('lista-carrito');
   const totalDiv = document.getElementById('total');
   const btnVaciar = document.getElementById('vaciar-carrito');
 
+  let productos = [];
   let carrito = [];
+
+  // Carga el JSON con fetch
+  async function cargarProductos() {
+    try {
+      const response = await fetch('catalogo.json');
+      if (!response.ok) {
+        throw new Error('Error al cargar el archivo JSON');
+      }
+      productos = await response.json();
+      mostrarProductos();
+    } catch (error) {
+      productosDiv.textContent = 'Error al cargar productos: ' + error.message;
+    }
+  }
 
   // Mostrar productos
   function mostrarProductos() {
@@ -122,7 +115,7 @@
   });
 
   // Inicializamos la página
-  mostrarProductos();
+  cargarProductos();
   mostrarCarrito();
 
   // Para que las funciones estén accesibles desde los botones inline
