@@ -269,5 +269,22 @@ h1 {
 .modal-content {
   cursor: default;
 }
+#enviar-pedido {
+  background-color: #25d366; /* Verde WhatsApp */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+}
+
+#enviar-pedido:hover {
+  background-color: #1ebe57;
+}
 
 
