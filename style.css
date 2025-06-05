@@ -286,5 +286,20 @@ h1 {
 #enviar-pedido:hover {
   background-color: #1ebe57;
 }
+#btnEnviarPedido, #vaciar-carrito {
+  background-color: #007BFF; /* azul primario */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px 5px 0 0;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#btnEnviarPedido:hover, #vaciar-carrito:hover {
+  background-color: #0056b3; /* azul más oscuro al pasar el mouse */
+}
 
 
