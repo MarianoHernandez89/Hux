@@ -13,6 +13,10 @@ const selectTalle = document.getElementById('selectTalle');
 const btnAgregarModal = document.getElementById('btnAgregarModal');
 const btnEnviarPedido = document.getElementById('btnEnviarPedido');  // NUEVO botón
 
+// Nuevo ícono carrito y contador
+const iconoCarrito = document.getElementById('iconoCarrito');
+const contadorCarrito = document.getElementById('contadorCarrito');
+
 let productos = [];
 let carrito = [];
 
@@ -128,7 +132,7 @@ btnAgregarModal.onclick = () => {
   modal.style.display = 'none';
 }
 
-// Mostrar carrito con talles
+// Mostrar carrito con talles y actualizar contador
 function mostrarCarrito() {
   listaCarrito.innerHTML = '';
   let total = 0;
@@ -145,6 +149,12 @@ function mostrarCarrito() {
     listaCarrito.appendChild(li);
   });
   totalDiv.textContent = `Total: $${total}`;
+  actualizarContadorCarrito();
+
+  // Si carrito está vacío, ocultarlo automáticamente
+  if (carrito.length === 0) {
+    document.getElementById('carrito').style.display = 'none';
+  }
 }
 
 // Eliminar producto del carrito (por id y talle)
@@ -183,6 +193,24 @@ btnEnviarPedido.addEventListener('click', () => {
 
   const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
   window.open(urlWhatsApp, '_blank');
+});
+
+// Actualizar contador en el ícono del carrito
+function actualizarContadorCarrito() {
+  const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  contadorCarrito.textContent = totalCantidad;
+  contadorCarrito.style.display = totalCantidad > 0 ? 'inline-block' : 'none';
+}
+
+// Mostrar/ocultar carrito al hacer click en el ícono
+iconoCarrito.addEventListener('click', () => {
+  if (carrito.length === 0) return; // No mostrar si carrito vacío
+  const carritoDiv = document.getElementById('carrito');
+  if (carritoDiv.style.display === 'none' || carritoDiv.style.display === '') {
+    carritoDiv.style.display = 'block';
+  } else {
+    carritoDiv.style.display = 'none';
+  }
 });
 
 // Inicializamos la página
