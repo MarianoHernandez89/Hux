@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Catálogo con Carrito</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  .producto { border: 1px solid #ddd; padding: 10px; margin: 10px; width: 200px; display: inline-block; vertical-align: top; }
+  .producto img { max-width: 100%; height: auto; }
+  .producto button { margin-top: 10px; padding: 5px 10px; cursor: pointer; }
+  #carrito { position: fixed; right: 20px; top: 20px; width: 300px; border: 1px solid #333; padding: 15px; background: #f9f9f9; }
+  #carrito h2 { margin-top: 0; }
+  #carrito ul { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
+  #carrito ul li { margin-bottom: 10px; }
+  #carrito button { background: #e74c3c; color: white; border: none; padding: 3px 7px; cursor: pointer; margin-left: 10px; }
+  #total { font-weight: bold; margin-top: 10px; }
+</style>
+</head>
+<body>
 
+<h1>Catálogo de Productos</h1>
+
+<div id="productos"></div>
+
+<div id="carrito">
+  <h2>Carrito</h2>
+  <ul id="lista-carrito"></ul>
+  <div id="total">Total: $0</div>
+  <button id="vaciar-carrito">Vaciar carrito</button>
+</div>
+
+<script>
+  // Simulamos que este es tu JSON, después podés cargarlo con fetch si querés
+  const productos = [
+    {
+      "id": 1,
+      "nombre": "Remera Roja",
+      "precio": 1500,
+      "imagen": "img/remera1.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Zapatillas Running",
+      "precio": 3500,
+      "imagen": "img/zapatilla2.jpg"
+    },
+    {
+      "id": 3,
+      "nombre": "Gorra Azul",
+      "precio": 800,
+      "imagen": "img/gorra1.jpg"
+    }
+  ];
+
+  const productosDiv = document.getElementById('productos');
+  const listaCarrito = document.getElementById('lista-carrito');
+  const totalDiv = document.getElementById('total');
+  const btnVaciar = document.getElementById('vaciar-carrito');
+
+  let carrito = [];
+
+  // Mostrar productos
+  function mostrarProductos() {
+    productosDiv.innerHTML = '';
+    productos.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'producto';
+      div.innerHTML = `
+        <img src="${p.imagen}" alt="${p.nombre}" />
+        <h3>${p.nombre}</h3>
+        <p>Precio: $${p.precio}</p>
+        <button onclick="agregarAlCarrito(${p.id})">Agregar al carrito</button>
+      `;
+      productosDiv.appendChild(div);
+    });
+  }
+
+  // Agregar producto al carrito
+  function agregarAlCarrito(id) {
+    const producto = productos.find(p => p.id === id);
+    if (!producto) return;
+
+    const itemCarrito = carrito.find(item => item.id === id);
+    if (itemCarrito) {
+      itemCarrito.cantidad++;
+    } else {
+      carrito.push({ ...producto, cantidad: 1 });
+    }
+    mostrarCarrito();
+  }
+
+  // Mostrar carrito
+  function mostrarCarrito() {
+    listaCarrito.innerHTML = '';
+    let total = 0;
+    carrito.forEach(item => {
+      total += item.precio * item.cantidad;
+      const li = document.createElement('li');
+      li.textContent = `${item.nombre} x${item.cantidad} - $${item.precio * item.cantidad}`;
+      const btnEliminar = document.createElement('button');
+      btnEliminar.textContent = 'X';
+      btnEliminar.onclick = () => {
+        eliminarDelCarrito(item.id);
+      };
+      li.appendChild(btnEliminar);
+      listaCarrito.appendChild(li);
+    });
+    totalDiv.textContent = `Total: $${total}`;
+  }
+
+  // Eliminar producto del carrito
+  function eliminarDelCarrito(id) {
+    carrito = carrito.filter(item => item.id !== id);
+    mostrarCarrito();
+  }
+
+  // Vaciar carrito
+  btnVaciar.addEventListener('click', () => {
+    carrito = [];
+    mostrarCarrito();
+  });
+
+  // Inicializamos la página
+  mostrarProductos();
+  mostrarCarrito();
+
+  // Para que las funciones estén accesibles desde los botones inline
+  window.agregarAlCarrito = agregarAlCarrito;
+
+</script>
+
+</body>
+</html>
