@@ -24,36 +24,33 @@ let productoSeleccionado = null; // Para el modal
 
 // Carga el JSON con fetch
 async function cargarProductos() {
-  const sheetID = '1Vr9NIBycu6ucBu9urp4GgvZm6WmaRcHFoFBV2N0wgtc';
-  const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
-
   try {
-    const response = await fetch(url);
+    const response = await fetch('https://docs.google.com/spreadsheets/d/1Vr9NIBycu6ucBu9urp4GgvZm6WmaRcHFoFBV2N0wgtc/gviz/tq?tqx=out:json');
     const text = await response.text();
 
-    // Limpiar el formato extraño del JSON de Google
-    const jsonData = JSON.parse(text.substring(47).slice(0, -2));
-    const rows = jsonData.table.rows;
+    // Google devuelve algo como "/*O_o*/\ngoogle.visualization.Query.setResponse(...)"
+    const json = JSON.parse(text.substring(47).slice(0, -2)); // Limpiar el texto
 
-    productos = rows.map((row, index) => {
+    productos = json.table.rows.map(row => {
+      const c = row.c;
       return {
-        id: parseInt(row.c[0]?.v || index + 1),
-        nombre: row.c[1]?.v || '',
-        marca: row.c[2]?.v || '',
-        precio: parseFloat(row.c[3]?.v || 0),
-        imagen: row.c[4]?.v || '',
-        talles: (row.c[5]?.v || '').split(',').map(t => t.trim())
+        id: parseInt(c[0]?.v),
+        nombre: c[1]?.v || '',
+        marca: c[2]?.v || '',
+        precio: parseFloat(c[3]?.v) || 0,
+        imagen: c[4]?.v || '',
+        talles: (c[5]?.v || '').split(',').map(t => t.trim())
       };
     });
 
     cargarMarcas();
     mostrarProductos();
-
   } catch (error) {
     productosDiv.textContent = 'Error al cargar productos desde la planilla: ' + error.message;
     console.error(error);
   }
 }
+
 
 // Carga las marcas en el select, sin repetir
 function cargarMarcas() {
