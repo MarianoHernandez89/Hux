@@ -323,140 +323,94 @@ h1 {
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   user-select: none;
-  z-index: 1100; /* por encima del carrito desplegable */
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: right 0.3s ease;
+  z-index: 1100; /* encima del carrito */
+  transition: background-color 0.3s ease;
 }
 
 #iconoCarrito:hover {
   background-color: #065cb3;
 }
 
-#contadorCarrito {
-  background: #d63031;
-  border-radius: 50%;
-  padding: 2px 8px;
-  font-size: 0.9rem;
-  color: white;
-  font-weight: 700;
-}
-
-/* --- Ajustes para móvil --- */
+/* --- Ajustes mejorados para carrito en móvil --- */
 @media (max-width: 600px) {
-  body {
-    margin: 15px;
+  /* Ocultar el título principal y el filtro para dar más espacio */
+  h1, #filtroMarca {
+    display: none;
   }
 
-  h1 {
-    font-size: 1.6rem;
-    padding-right: 0;
-  }
-
-  /* Grid de productos se vuelve lista vertical */
   #productos {
-    display: block;
     max-width: 100%;
-    margin-bottom: 80px; /* espacio abajo para carrito fijo */
+    margin-bottom: 120px; /* espacio para carrito fijo abajo */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
   }
 
   .producto {
-    max-width: 100%;
-    margin-bottom: 20px;
-    padding: 15px 10px;
-    flex-direction: row;
-    align-items: center;
+    padding: 12px;
   }
 
-  .producto img {
-    max-width: 100px;
-    margin-right: 20px;
-  }
-
-  .producto h3 {
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
-
-  .producto p {
-    font-size: 0.9rem;
-    margin-bottom: 0;
-  }
-
-  .producto button {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-
+  /* Carrito fijo abajo, ancho completo, scroll interno */
   #carrito {
-    width: 100%;
-    right: 0;
-    left: 0;
-    top: auto;
+    position: fixed;
     bottom: 0;
-    max-height: 70vh;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 70vh; /* que ocupe hasta 70% altura pantalla */
     border-radius: 10px 10px 0 0;
-    padding: 15px;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* scroll interno si hay muchos items */
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
   }
 
+  /* Mostrar título, lista y botones dentro carrito en móvil */
   #carrito h2,
   #carrito ul,
   #total,
   #vaciar-carrito {
-    display: none;
+    display: block;
   }
 
-  /* Ícono carrito arriba, más a la derecha para dejar espacio al fijo abajo */
+  /* Ajustar lista dentro carrito para que use espacio y scroll */
+  #carrito ul {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin: 10px 0;
+    max-height: calc(70vh - 140px); /* para que no exceda el carrito */
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+  }
+
+  /* Botón vaciar carrito y total en fila */
+  #total {
+    margin: 10px 0 5px;
+  }
+
+  #vaciar-carrito {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Ajuste ícono carrito */
   #iconoCarrito {
     top: 10px;
     right: 15px;
     font-size: 1.2rem;
     padding: 8px 12px;
   }
-}
 
-/* --- Mejoras para modal en móvil --- */
-@media (max-width: 600px) {
-  /* Modal fondo ocupa toda la pantalla, sin padding para que el modal pueda crecer */
-  .modal {
-    padding: 0;
-  }
-
-  /* Modal content en móvil ocupa casi toda la pantalla, centrado, con borde redondeado */
+  /* Modal modal-content tamaño máximo y scroll */
   .modal-content {
-    width: 100%;
-    max-width: 100%;
-    max-height: 100vh;
-    border-radius: 0;
-    margin: 0 auto;
-    padding: 15px 20px;
-  }
-
-  /* Botón cerrar más grande y con espacio para tocar fácil */
-  .close {
-    font-size: 32px;
-    right: 20px;
-    top: 15px;
-    padding: 5px 10px;
-  }
-
-  /* Select y botones dentro modal con tamaño cómodo para dedos */
-  #selectTalle {
-    font-size: 18px;
-    padding: 12px 16px;
-    max-width: 100%;
-  }
-
-  #btnAgregarModal {
-    font-size: 18px;
-    padding: 14px 25px;
+    max-width: 95vw;
+    max-height: 80vh;
+    padding: 15px;
   }
 }
 
-/* Evitar que al hacer scroll en modal se mueva el body de fondo */
+/* --- Para evitar scroll del body cuando modal está abierto --- */
 body.modal-open {
   overflow: hidden;
 }
