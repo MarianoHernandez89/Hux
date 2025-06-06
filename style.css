@@ -391,21 +391,15 @@ h1 {
     flex-shrink: 0;
   }
 
-  /* Carrito fijo abajo como barra */
   #carrito {
-    position: fixed;
-    bottom: 0;
+    width: 100%;
     right: 0;
     left: 0;
-    width: 100%;
-    max-height: 60px;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    border-radius: 0;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
-    overflow: visible;
+    top: auto;
+    bottom: 0;
+    max-height: 70vh;
+    border-radius: 10px 10px 0 0;
+    padding: 15px;
   }
 
   #carrito h2,
