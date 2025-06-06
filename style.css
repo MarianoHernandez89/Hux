@@ -335,7 +335,7 @@ h1 {
 @media (max-width: 600px) {
   /* Ocultar el título principal y el filtro para dar más espacio */
   h1, #filtroMarca {
-    display: none;
+    display: block;
   }
 
   #productos {
