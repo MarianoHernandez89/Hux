@@ -341,90 +341,128 @@ h1 {
   font-size: 0.9rem;
   color: white;
   font-weight: 700;
-  user-select: none;
 }
 
-/* --- Media Queries para móviles --- */
+/* --- Ajustes para móvil --- */
 @media (max-width: 600px) {
-
   body {
-    margin: 15px 10px 50px 10px; /* menos margen para pantallas chicas */
+    margin: 15px;
   }
 
   h1 {
-    font-size: 1.8rem;
-    padding-right: 0; /* quitamos el padding para que no quede espacio vacío */
-    margin-bottom: 20px;
+    font-size: 1.6rem;
+    padding-right: 0;
   }
 
-  /* Ajustamos el grid para que sea 1 columna en móvil */
+  /* Grid de productos se vuelve lista vertical */
   #productos {
-    grid-template-columns: 1fr;
+    display: block;
     max-width: 100%;
-    margin-bottom: 150px; /* dejamos espacio abajo para el carrito fijo */
-    gap: 15px;
+    margin-bottom: 80px; /* espacio abajo para carrito fijo */
   }
 
-  /* Reducimos tamaño del botón agregar */
-  .producto button {
-    padding: 8px 15px;
-    font-size: 1rem;
+  .producto {
+    max-width: 100%;
+    margin-bottom: 20px;
+    padding: 15px 10px;
+    flex-direction: row;
+    align-items: center;
   }
 
-  /* Reducimos tamaño imágenes */
   .producto img {
-    max-width: 120px;
-    margin-bottom: 10px;
+    max-width: 100px;
+    margin-right: 20px;
   }
 
-  /* Carrito fijo cambia a barra inferior */
+  .producto h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .producto p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .producto button {
+    width: auto;
+    padding: 8px 16px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Carrito fijo abajo como barra */
   #carrito {
     position: fixed;
     bottom: 0;
     right: 0;
     left: 0;
     width: 100%;
-    max-height: 200px;
-    padding: 15px 20px;
-    border-radius: 15px 15px 0 0;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
-    overflow-y: auto;
+    max-height: 60px;
+    padding: 0 20px;
     display: flex;
-    flex-direction: column;
-    z-index: 1100;
+    align-items: center;
+    justify-content: flex-end;
+    border-radius: 0;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+    overflow: visible;
   }
 
-  #carrito h2 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-  }
-
-  #carrito ul li {
-    font-size: 0.9rem;
-    padding: 6px 0;
-  }
-
-  #total {
-    font-size: 1rem;
-    margin: 15px 0 10px 0;
-  }
-
+  #carrito h2,
+  #carrito ul,
+  #total,
   #vaciar-carrito {
-    padding: 10px 15px;
-    font-size: 1rem;
+    display: none;
   }
 
-  /* Ícono carrito pasa a esquina inferior derecha, pero con espacio para que no tape texto */
+  /* Ícono carrito arriba, más a la derecha para dejar espacio al fijo abajo */
   #iconoCarrito {
-    top: auto;
-    bottom: 220px;
+    top: 10px;
     right: 15px;
     font-size: 1.2rem;
     padding: 8px 12px;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    justify-content: center;
-    gap: 0;
   }
+}
+
+/* --- Mejoras para modal en móvil --- */
+@media (max-width: 600px) {
+  /* Modal fondo ocupa toda la pantalla, sin padding para que el modal pueda crecer */
+  .modal {
+    padding: 0;
+  }
+
+  /* Modal content en móvil ocupa casi toda la pantalla, centrado, con borde redondeado */
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0 auto;
+    padding: 15px 20px;
+  }
+
+  /* Botón cerrar más grande y con espacio para tocar fácil */
+  .close {
+    font-size: 32px;
+    right: 20px;
+    top: 15px;
+    padding: 5px 10px;
+  }
+
+  /* Select y botones dentro modal con tamaño cómodo para dedos */
+  #selectTalle {
+    font-size: 18px;
+    padding: 12px 16px;
+    max-width: 100%;
+  }
+
+  #btnAgregarModal {
+    font-size: 18px;
+    padding: 14px 25px;
+  }
+}
+
+/* Evitar que al hacer scroll en modal se mueva el body de fondo */
+body.modal-open {
+  overflow: hidden;
 }
