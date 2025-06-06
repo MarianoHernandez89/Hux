@@ -11,26 +11,35 @@ const modalNombre = document.getElementById('modalNombre');
 const modalPrecio = document.getElementById('modalPrecio');
 const selectTalle = document.getElementById('selectTalle');
 const btnAgregarModal = document.getElementById('btnAgregarModal');
-const btnEnviarPedido = document.getElementById('btnEnviarPedido');  // NUEVO botón
+const btnEnviarPedido = document.getElementById('btnEnviarPedido');
 
-// Nuevo ícono carrito y contador
 const iconoCarrito = document.getElementById('iconoCarrito');
 const contadorCarrito = document.getElementById('contadorCarrito');
 
 let productos = [];
 let carrito = [];
 
-let productoSeleccionado = null; // Para el modal
+let productoSeleccionado = null;
 
-// Carga el JSON con fetch
+// Funciones para agregar/remover clase que bloquea scroll al body
+function bloquearScroll() {
+  document.body.classList.add('modal-open');
+}
+
+function desbloquearScroll() {
+  // Solo desbloquea si ni modal ni carrito están visibles
+  if ((modal.style.display === 'none' || modal.style.display === '') &&
+      (document.getElementById('carrito').style.display === 'none' || document.getElementById('carrito').style.display === '')) {
+    document.body.classList.remove('modal-open');
+  }
+}
+
+// Carga productos desde Google Sheets
 async function cargarProductos() {
   try {
     const response = await fetch('https://docs.google.com/spreadsheets/d/1Vr9NIBycu6ucBu9urp4GgvZm6WmaRcHFoFBV2N0wgtc/gviz/tq?tqx=out:json');
     const text = await response.text();
-
-    // Google devuelve algo como "/*O_o*/\ngoogle.visualization.Query.setResponse(...)"
-    const json = JSON.parse(text.substring(47).slice(0, -2)); // Limpiar el texto
-
+    const json = JSON.parse(text.substring(47).slice(0, -2));
     productos = json.table.rows.map(row => {
       const c = row.c;
       return {
@@ -42,7 +51,6 @@ async function cargarProductos() {
         talles: (c[5]?.v || '').split(',').map(t => t.trim())
       };
     });
-
     cargarMarcas();
     mostrarProductos();
   } catch (error) {
@@ -51,8 +59,7 @@ async function cargarProductos() {
   }
 }
 
-
-// Carga las marcas en el select, sin repetir
+// Carga marcas únicas en el filtro
 function cargarMarcas() {
   const marcas = Array.from(new Set(productos.map(p => p.marca))).sort();
   marcas.forEach(marca => {
@@ -63,7 +70,7 @@ function cargarMarcas() {
   });
 }
 
-// Mostrar productos filtrando por marca seleccionada
+// Muestra productos filtrados por marca
 function mostrarProductos() {
   productosDiv.innerHTML = '';
   const marcaSeleccionada = filtroMarca.value;
@@ -80,7 +87,6 @@ function mostrarProductos() {
   productosFiltrados.forEach(p => {
     const div = document.createElement('div');
     div.className = 'producto';
-    // Aquí la imagen tiene onclick para abrir modal
     div.innerHTML = `
       <img src="${p.imagen}" alt="${p.nombre}" style="cursor:pointer;" onclick="abrirModal(${p.id})" />
       <h3>${p.nombre}</h3>
@@ -95,12 +101,14 @@ function abrirModal(id) {
   productoSeleccionado = productos.find(p => p.id === id);
   if (!productoSeleccionado) return;
 
+  // Si carrito está abierto, cerrarlo para evitar scroll conflictivo
+  cerrarCarrito();
+
   modalImagen.src = productoSeleccionado.imagen;
   modalImagen.alt = productoSeleccionado.nombre;
   modalNombre.textContent = productoSeleccionado.nombre;
   modalPrecio.textContent = `Precio: $${productoSeleccionado.precio}`;
 
-  // Cargar talles en select
   selectTalle.innerHTML = '';
   productoSeleccionado.talles.forEach(talle => {
     const option = document.createElement('option');
@@ -110,27 +118,29 @@ function abrirModal(id) {
   });
 
   modal.style.display = 'block';
+  bloquearScroll();
 }
 
 // Cerrar modal
 cerrarModalBtn.onclick = () => {
   modal.style.display = 'none';
+  desbloquearScroll();
 }
 
 // Cerrar modal al hacer click fuera del contenido
 window.onclick = (event) => {
   if (event.target === modal) {
     modal.style.display = 'none';
+    desbloquearScroll();
   }
 }
 
-// Agregar producto al carrito desde modal con talle seleccionado
+// Agregar producto al carrito desde modal
 btnAgregarModal.onclick = () => {
   if (!productoSeleccionado) return;
 
   const talleElegido = selectTalle.value;
 
-  // Chequear si ya existe el producto con ese talle en el carrito
   const itemExistente = carrito.find(item => item.id === productoSeleccionado.id && item.talle === talleElegido);
 
   if (itemExistente) {
@@ -143,10 +153,12 @@ btnAgregarModal.onclick = () => {
     });
   }
   mostrarCarrito();
+
   modal.style.display = 'none';
+  desbloquearScroll();
 }
 
-// Mostrar carrito con talles y actualizar contador
+// Mostrar carrito y actualizar contador
 function mostrarCarrito() {
   listaCarrito.innerHTML = '';
   let total = 0;
@@ -165,13 +177,17 @@ function mostrarCarrito() {
   totalDiv.textContent = `Total: $${total}`;
   actualizarContadorCarrito();
 
-  // Si carrito está vacío, ocultarlo automáticamente
+  const carritoDiv = document.getElementById('carrito');
   if (carrito.length === 0) {
-    document.getElementById('carrito').style.display = 'none';
+    carritoDiv.style.display = 'none';
+    desbloquearScroll();
+  } else {
+    carritoDiv.style.display = 'block';
+    bloquearScroll();
   }
 }
 
-// Eliminar producto del carrito (por id y talle)
+// Eliminar producto del carrito
 function eliminarDelCarrito(id, talle) {
   carrito = carrito.filter(item => !(item.id === id && item.talle === talle));
   mostrarCarrito();
@@ -183,7 +199,7 @@ btnVaciar.addEventListener('click', () => {
   mostrarCarrito();
 });
 
-// Filtro marca cambia la vista
+// Filtro marca
 filtroMarca.addEventListener('change', mostrarProductos);
 
 // Enviar pedido por WhatsApp
@@ -193,7 +209,7 @@ btnEnviarPedido.addEventListener('click', () => {
     return;
   }
 
-  let mensaje = 'Hola, quiero hacer el siguiente pedido:%0A%0A'; // %0A es salto de línea en URL encoding
+  let mensaje = 'Hola, quiero hacer el siguiente pedido:%0A%0A';
 
   carrito.forEach(item => {
     mensaje += `- ${item.nombre} (Talle: ${item.talle}) x${item.cantidad} - $${item.precio * item.cantidad}%0A`;
@@ -202,34 +218,50 @@ btnEnviarPedido.addEventListener('click', () => {
   const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
   mensaje += `%0ATotal: $${total}`;
 
-  // Número de WhatsApp (sin + ni espacios, ejemplo: 5491122233344)
   const numeroWhatsApp = '5492213502642';
 
   const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
   window.open(urlWhatsApp, '_blank');
 });
 
-// Actualizar contador en el ícono del carrito
+// Actualizar contador carrito
 function actualizarContadorCarrito() {
   const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
   contadorCarrito.textContent = totalCantidad;
   contadorCarrito.style.display = totalCantidad > 0 ? 'inline-block' : 'none';
 }
 
-// Mostrar/ocultar carrito al hacer click en el ícono
+// Funciones para abrir/cerrar carrito con scroll bloqueado
+function abrirCarrito() {
+  // Si modal está abierto, cerrarlo para evitar conflicto
+  modal.style.display = 'none';
+  modalSeleccionado = null;
+  desbloquearScroll();
+
+  const carritoDiv = document.getElementById('carrito');
+  if (carrito.length === 0) return; // No abrir si vacío
+  carritoDiv.style.display = 'block';
+  bloquearScroll();
+}
+
+function cerrarCarrito() {
+  const carritoDiv = document.getElementById('carrito');
+  carritoDiv.style.display = 'none';
+  desbloquearScroll();
+}
+
+// Toggle carrito al click en icono
 iconoCarrito.addEventListener('click', () => {
-  if (carrito.length === 0) return; // No mostrar si carrito vacío
   const carritoDiv = document.getElementById('carrito');
   if (carritoDiv.style.display === 'none' || carritoDiv.style.display === '') {
-    carritoDiv.style.display = 'block';
+    abrirCarrito();
   } else {
-    carritoDiv.style.display = 'none';
+    cerrarCarrito();
   }
 });
 
-// Inicializamos la página
+// Inicialización
 cargarProductos();
 mostrarCarrito();
 
-// Para que la función abrirModal esté accesible en onclick inline
 window.abrirModal = abrirModal;
