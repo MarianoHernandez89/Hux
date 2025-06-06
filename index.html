@@ -18,7 +18,7 @@
 <div id="productos">Cargando productos...</div>
 
 <!-- Ícono del carrito con contador -->
-<div id="iconoCarrito" title="Ver carrito">
+<div id="iconoCarrito" title="Ver carrito" aria-label="Ver carrito" role="button" tabindex="0">
   🛒 <span id="contadorCarrito">0</span>
 </div>
 
@@ -32,9 +32,9 @@
 </div>
 
 <!-- Modal para detalles y selección de talle -->
-<div id="modalProducto" class="modal">
-  <div class="modal-content">
-    <span id="cerrarModal" class="close">&times;</span>
+<div id="modalProducto" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalNombre">
+    <span id="cerrarModal" class="close" role="button" tabindex="0" aria-label="Cerrar modal">&times;</span>
     <img id="modalImagen" src="" alt="" />
     <h3 id="modalNombre"></h3>
     <p id="modalPrecio"></p>
