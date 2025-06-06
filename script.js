@@ -178,12 +178,11 @@ function mostrarCarrito() {
   actualizarContadorCarrito();
 
   const carritoDiv = document.getElementById('carrito');
+  // NO abrir carrito automáticamente aquí
+  // Solo ocultar si vacío
   if (carrito.length === 0) {
     carritoDiv.style.display = 'none';
     desbloquearScroll();
-  } else {
-    carritoDiv.style.display = 'block';
-    bloquearScroll();
   }
 }
 
@@ -235,7 +234,7 @@ function actualizarContadorCarrito() {
 function abrirCarrito() {
   // Si modal está abierto, cerrarlo para evitar conflicto
   modal.style.display = 'none';
-  modalSeleccionado = null;
+  productoSeleccionado = null;
   desbloquearScroll();
 
   const carritoDiv = document.getElementById('carrito');
