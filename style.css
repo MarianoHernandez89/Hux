@@ -99,7 +99,7 @@ h1 {
   display: flex;
   flex-direction: column;
   z-index: 100;
-  overflow-y: auto;
+  overflow-y: auto; /* Scroll vertical para cuando el contenido sobrepase max-height */
 }
 
 #carrito h2 {
@@ -333,7 +333,7 @@ h1 {
 
 /* --- Ajustes mejorados para carrito en móvil --- */
 @media screen and (max-width: 600px) {
-  /* Ocultar el título principal y el filtro para dar más espacio */
+  /* Mostrar título principal y filtro */
   h1, #filtroMarca {
     display: block;
   }
@@ -351,10 +351,15 @@ h1 {
 
   /* Carrito fijo abajo, ancho completo, scroll interno */
   #carrito {
+    top: auto; /* ya no fijo arriba */
+    bottom: 0;
+    right: 0;
     width: 100vw;
     max-width: 100vw;
+    max-height: 300px; /* menor alto en móvil */
     border-radius: 10px 10px 0 0;
     padding: 10px;
+    overflow-y: auto;
   }
 
   #carrito ul li {
